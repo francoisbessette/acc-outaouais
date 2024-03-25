@@ -55,8 +55,10 @@ Here are some future ideas that could be implemented, sorted by likelihood.
 ## Acknowledgements
 
 ## Test Cases
-- Verify that organizer email and phone is not displayed for non-connected users
+### Filtering of organizer personal info on event page
 - Verify that organizer email and phone is displayed for connected users
+- Verify that organizer email and phone is not displayed for non-connected users
+### Notification email when a new event is created
 - Change an event from draft to publish, verify an email is triggered only
   if configured to do so.
 - Re-publish a published email should not sent an email. Only when status
@@ -65,5 +67,18 @@ Here are some future ideas that could be implemented, sorted by likelihood.
 - email is sent to the right set of people according to their roles 
 - when specifying to send to multiple roles, the email is sent to the merged members list.
 - A member which has 2 roles should receive only 1 email.
+- Verify the email is also sent to the specified admin email (if configured).
+- Verify that the event publisher, organizer and event start_date are correct.
+### Mailchimp integration
+Main test method: use a development or staging web site. Disable sending of emails.
+Delete a user account. Run the acc_user_importer plugin so that it re-adds that user.
+This will execute the hook in acc-outaouais for adding the user to mailchimp.
+- Verify nothing bad happens if the Mailchimp plugin is missing or deactivated.
+- Verify logging.
+- Verify nothing gets done if the "Add new members to Mailchimp" configuration
+  is disabled.
+- Assuming the configured mailchimp list ID option is valid, verify that the user
+  appears in the mailchimp list on the web interface.
+- verified user is moved to Subscribed if he was not.
 
 
