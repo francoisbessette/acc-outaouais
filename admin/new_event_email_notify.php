@@ -81,20 +81,20 @@ function get_users_by_roles($roles) {
         //From the user database, get a list of all members with those roles
         $users_with_role = get_users_by_roles($roles);
         accou_log("Sending to " . count($roles) . " roles, " . count($users_with_role) . " users");
-        $to = array();
+        $email_addresses = array();
         foreach($users_with_role as $user_id) {
             $user = get_userdata($user_id);
-            $to[] = $user->user_email;
+            $email_addresses[] = $user->user_email;
             //accou_log("$user->display_name");
         }
         //If needed, add the configured admin email who also want to be notified
         $admin_email = accou_get_setting('accou_new_event_admin');
         if (!empty($admin_email)) {
             accou_log("Adding $admin_email to the to: list");
-            $to[] = $admin_email;
+            $email_addresses[] = $admin_email;
         }
         // error_log("list of emails");
-        // error_log(print_r($to, true));
+        // error_log(print_r($email_addresses, true));
 
         //------------Set the subject of the email--------------------
         $start_date = tribe_get_start_date($post_id, true, 'Y-m-d H:i');
@@ -120,9 +120,23 @@ function get_users_by_roles($roles) {
         $preamble .= "Bonne journée!<br>-----------------------------------<br><br>";
         $message = $preamble . $post->post_content;
 
-        // Send the email.
-        $status = wp_mail($to, $subject, $message, $headers);
-        accou_log("Email sent, status=$status");
+        // Send the email. Brevo accepts a maximum of 99 recipients on the to:field.
+        // For safety, send in chunks of 50 recipients.
+        // Split the array into chunks of 50 recipients
+        $email_chunks = array_chunk($email_addresses, 50);
+        $to = array();      //For privacy, no names on the to line
+
+        foreach ($email_chunks as $emails) {
+            $headers_bcc = array();     //Start with an empty array
+            $headers_bcc[] = 'Bcc: ' . implode(',', $emails);    //comma-separated string
+            $headers_final = array_merge($headers, $headers_bcc);
+
+            if(wp_mail($to, $subject, $message, $headers_final)) {
+                accou_log("Mail sent successfully to " . count($emails) . " users");
+            } else {
+                accou_log("Mail sending failed to " . count($emails) . " users");
+            }
+        }
     }
 }
 
