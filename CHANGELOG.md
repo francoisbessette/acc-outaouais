@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4 Francois Bessette
+
+- Small fix to make log less verbose.
+
 ## 1.3 Francois Bessette
 
 - Add an unsubscribe link at the botton of emails sent when a new event

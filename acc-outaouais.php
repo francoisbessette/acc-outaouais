@@ -3,7 +3,7 @@
  * Plugin Name:       ACC Outaouais
  * Plugin URI:        https://github.com/francoisbessette/acc-outaouais
  * Description:       Plugin used to customize operation of the ACC Outaouais web site.
- * Version:           1.3
+ * Version:           1.4
  * Author:            François Bessette
  * Author URI:        https://github.com/francoisbessette
  * License:           GPL v2 or later
@@ -40,7 +40,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  *
  * @since 1.1
  */
-if ( ! defined( 'ACCOU_VERSION_NUM' ) ) 		define( 'ACCOU_VERSION_NUM'		, '1.3' );
+if ( ! defined( 'ACCOU_VERSION_NUM' ) ) 		define( 'ACCOU_VERSION_NUM'		, '1.4' );
 if ( ! defined( 'ACCOU_PLUGIN' ) )		define( 'ACCOU_PLUGIN'		, trim( dirname( plugin_basename( __FILE__ ) ), '/' ) );
 if ( ! defined( 'ACCOU_PLUGIN_DIR' ) )	define( 'ACCOU_PLUGIN_DIR'	, plugin_dir_path( __FILE__ ) ); // Plugin directory absolute path with the trailing slash. Useful for using with includes eg - /var/www/html/wp-content/plugins/acc-outaouais/
 if ( ! defined( 'ACCOU_PLUGIN_URL' ) )	define( 'ACCOU_PLUGIN_URL'	, plugin_dir_url( __FILE__ ) ); // URL to the plugin folder with the trailing slash. Useful for referencing src eg - http://localhost/wp/wp-content/plugins/acc-outaouais/

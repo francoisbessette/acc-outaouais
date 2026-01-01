@@ -105,6 +105,9 @@ function get_users_by_roles($roles) {
         $users_with_role = get_users_by_roles($roles);
         accou_log("Sending to " . count($roles) . " roles, " . count($users_with_role) . " users");
 
+        $numSuccess = 0;
+        $numErrors = 0;
+
         foreach($users_with_role as $user_id) {
             //Skip users who do not want to get emails
             $emailWanted = get_user_meta($user_id, 'acc_email_on_new_events', true);
@@ -116,11 +119,14 @@ function get_users_by_roles($roles) {
                 '">Se désabonner ou changer mes préférences</a></p>';
 
             if(wp_mail($to, $subject, $msgWithUnsubscribe, $headers)) {
-                accou_log("Mail sent successfully to $to");
+                $numSuccess++;
             } else {
-                accou_log("Mail sending failed to $to");
+                $numErrors++;
             }
         }
+
+        accou_log("email sending summary: $numSuccess success, $numErrors failures");
+
         //If needed, send to the configured admin email who also want to be notified
         $admin_email = accou_get_setting('accou_new_event_admin');
         if (!empty($admin_email)) {
